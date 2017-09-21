@@ -1,4 +1,4 @@
-class Request {
+export default class Request {
     constructor() {
         this.xhr = new XMLHttpRequest();
     }
