@@ -4,7 +4,98 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var x = function () {
+    function x() {
+        _classCallCheck(this, x);
+    }
+
+    _createClass(x, null, [{
+        key: "text",
+        value: function text(url, options) {
+            var request = new Request();
+            var opts = { type: "POST", url: url };
+            Object.assign(opts, options);
+            request.open(opts);
+
+            x.setTextHeaders(request);
+            x.setHeaders(request, opts);
+            x.setFunctionOverrides(request, opts);
+
+            var data = opts.hasOwnProperty('data') ? opts.data : undefined;
+            request.send(data);
+        }
+    }, {
+        key: "json",
+        value: function json(url, options) {
+            var request = new Request();
+            var opts = { type: "POST", url: url, responseType: "json" };
+            Object.assign(opts, options);
+            request.open(opts);
+
+            x.setJSONHeaders(request);
+            x.setHeaders(request, opts);
+            x.setFunctionOverrides(request, opts);
+
+            var data = opts.hasOwnProperty('data') ? JSON.stringify(opts.data) : undefined;
+            request.send(data);
+        }
+    }, {
+        key: "setJSONHeaders",
+        value: function setJSONHeaders(request) {
+            request.setHeader("X-Requested-With", "XMLHttpRequest");
+            request.setHeader("Content-Type", "application/json");
+        }
+    }, {
+        key: "setTextHeaders",
+        value: function setTextHeaders(request) {
+            request.setHeader("X-Requested-With", "XMLHttpRequest");
+            request.setHeader("Content-Type", "text/plain");
+        }
+    }, {
+        key: "setHeaders",
+        value: function setHeaders(request, options) {
+            if (options.hasOwnProperty('headers')) return;
+
+            for (var key in options.headers) {
+                if (!options.headers.hasOwnProperty(key)) continue;
+                request.setHeader(key, options.headers[key]);
+            }
+        }
+    }, {
+        key: "setFunctionOverrides",
+        value: function setFunctionOverrides(request, options) {
+            if (options.hasOwnProperty('convert')) request.convert = options.convert;
+            if (options.hasOwnProperty('success')) request.success = options.success;
+            if (options.hasOwnProperty('error')) request.error = options.error;
+            if (options.hasOwnProperty('aborted')) request.aborted = options.aborted;
+            if (options.hasOwnProperty('timeout')) request.timeout = options.timeout;
+        }
+    }, {
+        key: "isPending",
+        value: function isPending(request) {
+            if (request === null) return false;
+            if (request === undefined) return false;
+            if (!request.hasOwnProperty('isPending')) return false;
+            return request.isPending();
+        }
+    }, {
+        key: "abort",
+        value: function abort(request) {
+            if (request === null) return;
+            if (request === undefined) return;
+            if (!request.hasOwnProperty('abort')) return;
+            return request.abort();
+        }
+    }]);
+
+    return x;
+}();
+
+exports.default = x;
 
 var Request = function Request() {
     var _this2 = this;
@@ -99,109 +190,3 @@ var Request = function Request() {
 
     this.xhr = new XMLHttpRequest();
 };
-
-exports.default = Request;
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Request = require('./Request');
-
-var _Request2 = _interopRequireDefault(_Request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var x = function () {
-    function x() {
-        _classCallCheck(this, x);
-    }
-
-    _createClass(x, null, [{
-        key: 'text',
-        value: function text(url, options) {
-            var request = new _Request2.default();
-            var opts = { type: "POST", url: url };
-            Object.assign(opts, options);
-            request.open(opts);
-
-            x.setTextHeaders(request);
-            x.setHeaders(request, opts);
-            x.setFunctionOverrides(request, opts);
-
-            var data = opts.hasOwnProperty('data') ? opts.data : undefined;
-            request.send(data);
-        }
-    }, {
-        key: 'json',
-        value: function json(url, options) {
-            var request = new _Request2.default();
-            var opts = { type: "POST", url: url, responseType: "json" };
-            Object.assign(opts, options);
-            request.open(opts);
-
-            x.setJSONHeaders(request);
-            x.setHeaders(request, opts);
-            x.setFunctionOverrides(request, opts);
-
-            var data = opts.hasOwnProperty('data') ? JSON.stringify(opts.data) : undefined;
-            request.send(data);
-        }
-    }, {
-        key: 'setJSONHeaders',
-        value: function setJSONHeaders(request) {
-            request.setHeader("X-Requested-With", "XMLHttpRequest");
-            request.setHeader("Content-Type", "application/json");
-        }
-    }, {
-        key: 'setTextHeaders',
-        value: function setTextHeaders(request) {
-            request.setHeader("X-Requested-With", "XMLHttpRequest");
-            request.setHeader("Content-Type", "text/plain");
-        }
-    }, {
-        key: 'setHeaders',
-        value: function setHeaders(request, options) {
-            if (options.hasOwnProperty('headers')) return;
-
-            for (var key in options.headers) {
-                if (!options.headers.hasOwnProperty(key)) continue;
-                request.setHeader(key, options.headers[key]);
-            }
-        }
-    }, {
-        key: 'setFunctionOverrides',
-        value: function setFunctionOverrides(request, options) {
-            if (options.hasOwnProperty('convert')) request.convert = options.convert;
-            if (options.hasOwnProperty('success')) request.success = options.success;
-            if (options.hasOwnProperty('error')) request.error = options.error;
-            if (options.hasOwnProperty('aborted')) request.aborted = options.aborted;
-            if (options.hasOwnProperty('timeout')) request.timeout = options.timeout;
-        }
-    }, {
-        key: 'isPending',
-        value: function isPending(request) {
-            if (request === null) return false;
-            if (request === undefined) return false;
-            if (!request.hasOwnProperty('isPending')) return false;
-            return request.isPending();
-        }
-    }, {
-        key: 'abort',
-        value: function abort(request) {
-            if (request === null) return;
-            if (request === undefined) return;
-            if (!request.hasOwnProperty('abort')) return;
-            return request.abort();
-        }
-    }]);
-
-    return x;
-}();
-
-exports.default = x;
