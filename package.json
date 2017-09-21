@@ -1,0 +1,19 @@
+{
+  "name": "x",
+  "version": "1.0.0",
+  "description": "Javascript XMLHttpRequest Wrapper",
+  "main": "dist/x.js",
+  "jsnext:main": "source/x.js",
+  "scripts": {
+    "build": "babel source --presets env --plugins transform-class-properties --exclude async-to-generator  --out-file dist/x.js"
+  },
+  "repository": "git@github.com:redaniel22/x.git",
+  "author": "Daniel Reed <daniel.reed@reedworthytech.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.0"
+  }
+}
