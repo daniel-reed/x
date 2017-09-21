@@ -21,7 +21,7 @@ var x = function () {
             Object.assign(opts, options);
             request.open(opts);
 
-            x.setTextHeaders(request);
+            x.setTextHeaders(request, opts);
             x.setHeaders(request, opts);
             x.setFunctionOverrides(request, opts);
 
@@ -36,7 +36,7 @@ var x = function () {
             Object.assign(opts, options);
             request.open(opts);
 
-            x.setJSONHeaders(request);
+            x.setJSONHeaders(request, opts);
             x.setHeaders(request, opts);
             x.setFunctionOverrides(request, opts);
 
@@ -45,14 +45,18 @@ var x = function () {
         }
     }, {
         key: "setJSONHeaders",
-        value: function setJSONHeaders(request) {
-            request.setHeader("X-Requested-With", "XMLHttpRequest");
+        value: function setJSONHeaders(request, options) {
+            if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
+                request.setHeader("X-Requested-With", "XMLHttpRequest");
+            }
             request.setHeader("Content-Type", "application/json");
         }
     }, {
         key: "setTextHeaders",
-        value: function setTextHeaders(request) {
-            request.setHeader("X-Requested-With", "XMLHttpRequest");
+        value: function setTextHeaders(request, options) {
+            if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
+                request.setHeader("X-Requested-With", "XMLHttpRequest");
+            }
             request.setHeader("Content-Type", "text/plain");
         }
     }, {

@@ -5,7 +5,7 @@ export default class x {
         Object.assign(opts, options);
         request.open(opts);
 
-        x.setTextHeaders(request);
+        x.setTextHeaders(request, opts);
         x.setHeaders(request, opts);
         x.setFunctionOverrides(request, opts);
 
@@ -19,7 +19,7 @@ export default class x {
         Object.assign(opts, options);
         request.open(opts);
 
-        x.setJSONHeaders(request);
+        x.setJSONHeaders(request, opts);
         x.setHeaders(request, opts);
         x.setFunctionOverrides(request, opts);
 
@@ -27,13 +27,17 @@ export default class x {
         request.send(data);
     }
 
-    static setJSONHeaders(request) {
-        request.setHeader("X-Requested-With", "XMLHttpRequest");
+    static setJSONHeaders(request, options) {
+        if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
+            request.setHeader("X-Requested-With", "XMLHttpRequest");
+        }
         request.setHeader("Content-Type", "application/json");
     }
 
-    static setTextHeaders(request) {
-        request.setHeader("X-Requested-With", "XMLHttpRequest");
+    static setTextHeaders(request, options) {
+        if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
+            request.setHeader("X-Requested-With", "XMLHttpRequest");
+        }
         request.setHeader("Content-Type", "text/plain");
     }
 
