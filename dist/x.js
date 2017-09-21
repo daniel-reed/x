@@ -81,7 +81,9 @@ var Request = function Request() {
         _this2.timeout(_this2);
     };
 
-    this.convert = function (data, _this) {};
+    this.convert = function (data, _this) {
+        return data;
+    };
 
     this.success = function (response, _this) {};
 

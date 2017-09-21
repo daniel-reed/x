@@ -74,7 +74,7 @@ class Request {
         this.timeout(this);
     }
 
-    convert = function (data, _this) {}
+    convert = function (data, _this) {return data;}
 
     success = function (response, _this) {}
 
