@@ -178,22 +178,47 @@ var x = function () {
         }
     }, {
         key: "proto",
-        value: function proto(url, options) {}
+        value: function proto(url, options) {
+            var request = new Request();
+            var opts = { type: "POST", url: url, responseType: "json" };
+            Object.assign(opts, options);
+            request.open(opts);
+
+            x.setProtoHeaders(request, opts);
+            x.setHeaders(request, opts);
+            x.setFunctionOverrides(request, opts);
+            x.setProtoConvert(request, opts);
+
+            var data = void 0;
+            if (opts.hasOwnProperty('data') && opts.data.hasOwnProperty('serializeBinary')) {
+                data = opts.data.serializeBinary();
+            }
+            request.send(data);
+        }
     }, {
         key: "setJSONHeaders",
         value: function setJSONHeaders(request, options) {
-            if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
-                request.setHeader("X-Requested-With", "XMLHttpRequest");
-            }
+            x.setXRequestedWithHeader(request, options);
             request.setHeader("Content-Type", "application/json");
         }
     }, {
         key: "setTextHeaders",
         value: function setTextHeaders(request, options) {
+            x.setXRequestedWithHeader(request, options);
+            request.setHeader("Content-Type", "text/plain");
+        }
+    }, {
+        key: "setProtoHeaders",
+        value: function setProtoHeaders(request, options) {
+            x.setXRequestedWithHeader(request, options);
+            request.setHeader("Content-Type", "application/octet-stream");
+        }
+    }, {
+        key: "setXRequestedWithHeader",
+        value: function setXRequestedWithHeader(request, options) {
             if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
                 request.setHeader("X-Requested-With", "XMLHttpRequest");
             }
-            request.setHeader("Content-Type", "text/plain");
         }
     }, {
         key: "setHeaders",
@@ -215,6 +240,12 @@ var x = function () {
             if (options.hasOwnProperty('timeout')) request.timeout = options.timeout;
         }
     }, {
+        key: "setProtoConvert",
+        value: function setProtoConvert(request, options) {
+            if (!options.hasOwnProperty('proto')) return;
+            request.convert = x.buildProtoConvert(options.proto);
+        }
+    }, {
         key: "isPending",
         value: function isPending(request) {
             if (request === null) return false;
@@ -229,6 +260,13 @@ var x = function () {
             if (request === undefined) return;
             if (!request.hasOwnProperty('abort')) return;
             return request.abort();
+        }
+    }, {
+        key: "buildProtoConvert",
+        value: function buildProtoConvert(proto) {
+            return function (data, _this) {
+                return proto.deserializeBinary(data);
+            };
         }
     }]);
     return x;

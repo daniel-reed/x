@@ -1,7 +1,7 @@
 export default class x {
     static text(url, options) {
         let request = new Request();
-        let opts = {type: "POST", url: url}
+        let opts = {type: "POST", url: url};
         Object.assign(opts, options);
         request.open(opts);
 
@@ -15,7 +15,7 @@ export default class x {
 
     static json(url, options) {
         let request = new Request();
-        let opts = {type: "POST", url: url, responseType: "json"}
+        let opts = {type: "POST", url: url, responseType: "json"};
         Object.assign(opts, options);
         request.open(opts);
 
@@ -28,21 +28,42 @@ export default class x {
     }
 
     static proto(url, options) {
+        let request = new Request();
+        let opts = {type: "POST", url: url, responseType: "json"};
+        Object.assign(opts, options);
+        request.open(opts);
 
+        x.setProtoHeaders(request, opts);
+        x.setHeaders(request, opts);
+        x.setFunctionOverrides(request, opts);
+        x.setProtoConvert(request, opts);
+
+        let data;
+        if (opts.hasOwnProperty('data') && opts.data.hasOwnProperty('serializeBinary')) {
+            data = opts.data.serializeBinary();
+        }
+        request.send(data);
     }
 
     static setJSONHeaders(request, options) {
-        if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
-            request.setHeader("X-Requested-With", "XMLHttpRequest");
-        }
+        x.setXRequestedWithHeader(request, options);
         request.setHeader("Content-Type", "application/json");
     }
 
     static setTextHeaders(request, options) {
+        x.setXRequestedWithHeader(request, options);
+        request.setHeader("Content-Type", "text/plain");
+    }
+
+    static setProtoHeaders(request, options) {
+        x.setXRequestedWithHeader(request, options);
+        request.setHeader("Content-Type", "application/octet-stream")
+    }
+
+    static setXRequestedWithHeader(request, options) {
         if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
             request.setHeader("X-Requested-With", "XMLHttpRequest");
         }
-        request.setHeader("Content-Type", "text/plain");
     }
 
     static setHeaders(request, options) {
@@ -62,6 +83,11 @@ export default class x {
         if (options.hasOwnProperty('timeout')) request.timeout = options.timeout;
     }
 
+    static setProtoConvert(request, options) {
+        if (!options.hasOwnProperty('proto')) return;
+        request.convert = x.buildProtoConvert(options.proto);
+    }
+
     static isPending(request) {
         if (request === null) return false;
         if (request === undefined) return false;
@@ -74,6 +100,12 @@ export default class x {
         if (request === undefined) return;
         if (!request.hasOwnProperty('abort')) return;
         return request.abort();
+    }
+
+    static buildProtoConvert(proto) {
+        return function (data, _this) {
+            return proto.deserializeBinary(data);
+        }
     }
 }
 
