@@ -2,18 +2,27 @@
   "name": "x",
   "version": "1.0.0",
   "description": "Javascript XMLHttpRequest Wrapper",
-  "main": "dist/x.js",
-  "jsnext:main": "source/x.js",
+  "main": "main.js",
+  "jsnext:main": "main.mjs",
+  "module": "main.mjs",
+  "browser": "main.browser.js",
   "scripts": {
-    "build": "babel source --presets env --plugins transform-class-properties --exclude async-to-generator  --out-file dist/x.js"
+    "build": "node tools/build"
   },
   "repository": "git@github.com:redaniel22/x.git",
   "author": "Daniel Reed <daniel.reed@reedworthytech.com>",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.0"
+    "babel-preset-env": "^1.6.0",
+    "del": "^3.0.0",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "x",
+  "version": "1.0.0",
+  "description": "Javascript XMLHttpRequest Wrapper",
+  "main": "main.js",
+  "jsnext:main": "main.mjs",
+  "module": "main.mjs",
+  "browser": "main.browser.js",
+  "repository": "git@github.com:redaniel22/x.git",
+  "author": "Daniel Reed <daniel.reed@reedworthytech.com>",
+  "license": "MIT",
+  "dependencies": {}
+}

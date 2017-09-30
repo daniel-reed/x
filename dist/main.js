@@ -1,8 +1,4 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.x = factory());
-}(this, (function () { 'use strict';
+'use strict';
 
 var asyncGenerator = function () {
   function AwaitValue(value) {
@@ -332,7 +328,5 @@ var Request = function Request() {
     this.xhr = new XMLHttpRequest();
 };
 
-return x;
-
-})));
-//# sourceMappingURL=x.js.map
+module.exports = x;
+//# sourceMappingURL=main.js.map

@@ -27,6 +27,10 @@ export default class x {
         request.send(data);
     }
 
+    static proto(url, options) {
+
+    }
+
     static setJSONHeaders(request, options) {
         if (!options.hasOwnProperty('requestedWith') || options.requestedWith) {
             request.setHeader("X-Requested-With", "XMLHttpRequest");
