@@ -11,6 +11,8 @@ export default class x {
 
         let data = opts.hasOwnProperty('data') ? opts.data : undefined;
         request.send(data);
+
+        return x.returnRequestOrPromise(request, options);
     }
 
     static json(url, options) {
@@ -25,6 +27,8 @@ export default class x {
 
         let data = opts.hasOwnProperty('data') ? JSON.stringify(opts.data) : undefined;
         request.send(data);
+
+        return x.returnRequestOrPromise(request, options);
     }
 
     static proto(url, options) {
@@ -43,6 +47,8 @@ export default class x {
             data = opts.data.serializeBinary();
         }
         request.send(data);
+
+        return x.returnRequestOrPromise(request, options);
     }
 
     static setJSONHeaders(request, options) {
@@ -105,6 +111,13 @@ export default class x {
     static buildProtoConvert(proto) {
         return function (data, _this) {
             return proto.deserializeBinary(data);
+        }
+    }
+
+    static returnRequestOrPromise(request, options) {
+        switch (options.returnType) {
+            case "promise": return request.getPromise();
+            default: return request;
         }
     }
 }

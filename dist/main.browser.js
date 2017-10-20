@@ -160,6 +160,8 @@ var x = function () {
 
             var data = opts.hasOwnProperty('data') ? opts.data : undefined;
             request.send(data);
+
+            return x.returnRequestOrPromise(request, options);
         }
     }, {
         key: "json",
@@ -175,6 +177,8 @@ var x = function () {
 
             var data = opts.hasOwnProperty('data') ? JSON.stringify(opts.data) : undefined;
             request.send(data);
+
+            return x.returnRequestOrPromise(request, options);
         }
     }, {
         key: "proto",
@@ -194,6 +198,8 @@ var x = function () {
                 data = opts.data.serializeBinary();
             }
             request.send(data);
+
+            return x.returnRequestOrPromise(request, options);
         }
     }, {
         key: "setJSONHeaders",
@@ -267,6 +273,16 @@ var x = function () {
             return function (data, _this) {
                 return proto.deserializeBinary(data);
             };
+        }
+    }, {
+        key: "returnRequestOrPromise",
+        value: function returnRequestOrPromise(request, options) {
+            switch (options.returnType) {
+                case "promise":
+                    return request.getPromise();
+                default:
+                    return request;
+            }
         }
     }]);
     return x;
