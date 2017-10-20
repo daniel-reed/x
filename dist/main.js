@@ -366,6 +366,17 @@ var Request = function Request() {
 
     this.__handleSuccess = function () {
         switch (_this2.xhr.responseType) {
+            case "arraybuffer":
+                var buffer = _this2.xhr.response;
+                if (buffer) {
+                    _this2.response = _this2.convert(new Uint8Array(buffer));
+                    _this2.status = _this2.xhr.status;
+                } else {
+                    _this2.response = _this2.convert(new Uint8Array(0));
+                    _this2.status = _this2.xhr.status;
+                }
+                _this2.onSuccess(_this2.response, _this2);
+                break;
             case "json":
                 _this2.response = _this2.convert(_this2.xhr.response);
                 _this2.status = _this2.xhr.status;

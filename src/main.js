@@ -201,6 +201,17 @@ class Request {
 
     __handleSuccess = () => {
         switch (this.xhr.responseType) {
+            case "arraybuffer":
+                let buffer = this.xhr.response;
+                if (buffer) {
+                    this.response = this.convert(new Uint8Array(buffer));
+                    this.status = this.xhr.status;
+                } else {
+                    this.response = this.convert(new Uint8Array(0));
+                    this.status = this.xhr.status;
+                }
+                this.onSuccess(this.response, this);
+                break;
             case "json":
                 this.response = this.convert(this.xhr.response);
                 this.status = this.xhr.status;
