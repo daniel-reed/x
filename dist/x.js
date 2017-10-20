@@ -309,6 +309,10 @@ var Request = function Request() {
         _this2.xhr.setRequestHeader(k, v);
     };
 
+    this.getPromise = function () {
+        return _this2.promise;
+    };
+
     this.send = function (data) {
         if (data === undefined) return _this2.xhr.send();
         return _this2.xhr.send(data);
@@ -359,15 +363,27 @@ var Request = function Request() {
         return data;
     };
 
-    this.success = function (response, _this) {};
+    this.success = function (response, _this) {
+        _this.resolve(_this);
+    };
 
-    this.error = function (response, _this, status) {};
+    this.error = function (response, _this, status) {
+        _this.reject(_this);
+    };
 
-    this.aborted = function (_this) {};
+    this.aborted = function (_this) {
+        _this.reject(_this);
+    };
 
-    this.timeout = function (_this) {};
+    this.timeout = function (_this) {
+        _this.reject(_this);
+    };
 
     this.xhr = new XMLHttpRequest();
+    this.promise = new Promise(function (resolve, reject) {
+        _this2.resolve = resolve;
+        _this2.reject = reject;
+    });
 };
 
 return x;

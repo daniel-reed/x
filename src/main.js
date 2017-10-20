@@ -112,6 +112,10 @@ export default class x {
 class Request {
     constructor() {
         this.xhr = new XMLHttpRequest();
+        this.promise = new Promise((resolve, reject) => {
+            this.resolve = resolve;
+            this.reject = reject;
+        });
     }
 
     open = (opts) => {
@@ -138,6 +142,10 @@ class Request {
 
     setHeader = (k, v) => {
         this.xhr.setRequestHeader(k, v);
+    }
+
+    getPromise = () => {
+        return this.promise;
     }
 
     send = (data) => {
@@ -187,12 +195,20 @@ class Request {
 
     convert = function (data, _this) {return data;}
 
-    success = function (response, _this) {}
+    success = function (response, _this) {
+        _this.resolve(_this);
+    }
 
-    error = function (response, _this , status) {}
+    error = function (response, _this , status) {
+        _this.reject(_this);
+    }
 
-    aborted = function (_this) {}
+    aborted = function (_this) {
+        _this.reject(_this);
+    }
 
-    timeout = function (_this) {}
+    timeout = function (_this) {
+        _this.reject(_this);
+    }
 }
 
