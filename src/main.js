@@ -83,10 +83,10 @@ export default class x {
 
     static setFunctionOverrides(request, options) {
         if (options.hasOwnProperty('convert')) request.convert = options.convert;
-        if (options.hasOwnProperty('success')) request.success = options.success;
-        if (options.hasOwnProperty('error')) request.error = options.error;
-        if (options.hasOwnProperty('aborted')) request.aborted = options.aborted;
-        if (options.hasOwnProperty('timeout')) request.timeout = options.timeout;
+        if (options.hasOwnProperty('onSuccess')) request.onSuccess = options.onSuccess;
+        if (options.hasOwnProperty('onError')) request.onError = options.onError;
+        if (options.hasOwnProperty('onAbort')) request.onAbort = options.onAbort;
+        if (options.hasOwnProperty('onTimeout')) request.onTimeout = options.onTimeout;
     }
 
     static setProtoConvert(request, options) {
@@ -161,6 +161,22 @@ class Request {
         return this.promise;
     }
 
+    getResponse = () => {
+        return this.response;
+    }
+
+    getError = () => {
+        return this.error;
+    }
+
+    getStatus = () => {
+        return this.status;
+    }
+
+    hasError = () => {
+        return this.error !== undefined
+    }
+
     send = (data) => {
         if (data === undefined) return this.xhr.send();
         return this.xhr.send(data);
@@ -186,41 +202,51 @@ class Request {
     __handleSuccess = () => {
         switch (this.xhr.responseType) {
             case "json":
-                this.success(this.convert(this.xhr.response), this);
+                this.response = this.convert(this.xhr.response);
+                this.status = this.xhr.status;
+                this.onSuccess(this.response, this);
                 break;
             default:
-                this.success(this.convert(this.xhr.responseText), this);
+                this.response = this.convert(this.xhr.responseText);
+                this.status = this.xhr.status;
+                this.onSuccess(this.response, this);
                 break;
         }
     }
 
     __handleError = () => {
-        this.error(this.xhr.response, this, this.xhr.status)
+        this.error = this.xhr.response;
+        this.status = this.xhr.status;
+        this.onError(this.xhr.response, this, this.xhr.status)
     }
 
     __handleAborted = () => {
-        this.aborted(this);
+        this.error = "aborted";
+        this.status = 0;
+        this.onAbort(this);
     }
 
     __handleTimeout = () => {
-        this.timeout(this);
+        this.error = this.xhr.response;
+        this.status = this.xhr.status;
+        this.onTimeout(this);
     }
 
     convert = function (data, _this) {return data;}
 
-    success = function (response, _this) {
+    onSuccess = function (response, _this) {
         _this.resolve(_this);
     }
 
-    error = function (response, _this , status) {
+    onError = function (response, _this , status) {
         _this.reject(_this);
     }
 
-    aborted = function (_this) {
+    onAbort = function (_this) {
         _this.reject(_this);
     }
 
-    timeout = function (_this) {
+    onTimeout = function (_this) {
         _this.reject(_this);
     }
 }

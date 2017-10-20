@@ -240,10 +240,10 @@ var x = function () {
         key: "setFunctionOverrides",
         value: function setFunctionOverrides(request, options) {
             if (options.hasOwnProperty('convert')) request.convert = options.convert;
-            if (options.hasOwnProperty('success')) request.success = options.success;
-            if (options.hasOwnProperty('error')) request.error = options.error;
-            if (options.hasOwnProperty('aborted')) request.aborted = options.aborted;
-            if (options.hasOwnProperty('timeout')) request.timeout = options.timeout;
+            if (options.hasOwnProperty('onSuccess')) request.onSuccess = options.onSuccess;
+            if (options.hasOwnProperty('onError')) request.onError = options.onError;
+            if (options.hasOwnProperty('onAbort')) request.onAbort = options.onAbort;
+            if (options.hasOwnProperty('onTimeout')) request.onTimeout = options.onTimeout;
         }
     }, {
         key: "setProtoConvert",
@@ -325,6 +325,22 @@ var Request = function Request() {
         return _this2.promise;
     };
 
+    this.getResponse = function () {
+        return _this2.response;
+    };
+
+    this.getError = function () {
+        return _this2.error;
+    };
+
+    this.getStatus = function () {
+        return _this2.status;
+    };
+
+    this.hasError = function () {
+        return _this2.error !== undefined;
+    };
+
     this.send = function (data) {
         if (data === undefined) return _this2.xhr.send();
         return _this2.xhr.send(data);
@@ -351,43 +367,53 @@ var Request = function Request() {
     this.__handleSuccess = function () {
         switch (_this2.xhr.responseType) {
             case "json":
-                _this2.success(_this2.convert(_this2.xhr.response), _this2);
+                _this2.response = _this2.convert(_this2.xhr.response);
+                _this2.status = _this2.xhr.status;
+                _this2.onSuccess(_this2.response, _this2);
                 break;
             default:
-                _this2.success(_this2.convert(_this2.xhr.responseText), _this2);
+                _this2.response = _this2.convert(_this2.xhr.responseText);
+                _this2.status = _this2.xhr.status;
+                _this2.onSuccess(_this2.response, _this2);
                 break;
         }
     };
 
     this.__handleError = function () {
-        _this2.error(_this2.xhr.response, _this2, _this2.xhr.status);
+        _this2.error = _this2.xhr.response;
+        _this2.status = _this2.xhr.status;
+        _this2.onError(_this2.xhr.response, _this2, _this2.xhr.status);
     };
 
     this.__handleAborted = function () {
-        _this2.aborted(_this2);
+        _this2.error = "aborted";
+        _this2.status = 0;
+        _this2.onAbort(_this2);
     };
 
     this.__handleTimeout = function () {
-        _this2.timeout(_this2);
+        _this2.error = _this2.xhr.response;
+        _this2.status = _this2.xhr.status;
+        _this2.onTimeout(_this2);
     };
 
     this.convert = function (data, _this) {
         return data;
     };
 
-    this.success = function (response, _this) {
+    this.onSuccess = function (response, _this) {
         _this.resolve(_this);
     };
 
-    this.error = function (response, _this, status) {
+    this.onError = function (response, _this, status) {
         _this.reject(_this);
     };
 
-    this.aborted = function (_this) {
+    this.onAbort = function (_this) {
         _this.reject(_this);
     };
 
-    this.timeout = function (_this) {
+    this.onTimeout = function (_this) {
         _this.reject(_this);
     };
 
