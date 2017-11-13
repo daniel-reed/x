@@ -39,7 +39,7 @@ export default class x {
 
     static proto(url, options, promise) {
         let request = new Request();
-        let opts = {type: "POST", url: url, responseType: "json"};
+        let opts = {type: "POST", url: url, responseType: "arraybuffer"};
         Object.assign(opts, options);
         request.open(opts);
 

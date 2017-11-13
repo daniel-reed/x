@@ -189,7 +189,7 @@ var x = function () {
         key: "proto",
         value: function proto(url, options, promise) {
             var request = new Request();
-            var opts = { type: "POST", url: url, responseType: "json" };
+            var opts = { type: "POST", url: url, responseType: "arraybuffer" };
             Object.assign(opts, options);
             request.open(opts);
 
