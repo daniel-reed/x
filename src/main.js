@@ -45,8 +45,8 @@ export default class x {
 
         x.setProtoHeaders(request, opts);
         x.setHeaders(request, opts);
-        x.setFunctionOverrides(request, opts);
         x.setProtoConvert(request, opts);
+        x.setFunctionOverrides(request, opts);
 
         let data;
         if (opts.hasOwnProperty('data') && typeof opts.data.serializeBinary === 'function') {

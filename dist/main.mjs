@@ -195,8 +195,8 @@ var x = function () {
 
             x.setProtoHeaders(request, opts);
             x.setHeaders(request, opts);
-            x.setFunctionOverrides(request, opts);
             x.setProtoConvert(request, opts);
+            x.setFunctionOverrides(request, opts);
 
             var data = void 0;
             if (opts.hasOwnProperty('data') && typeof opts.data.serializeBinary === 'function') {
