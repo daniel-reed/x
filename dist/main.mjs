@@ -199,7 +199,7 @@ var x = function () {
             x.setProtoConvert(request, opts);
 
             var data = void 0;
-            if (opts.hasOwnProperty('data') && opts.data.hasOwnProperty('serializeBinary')) {
+            if (opts.hasOwnProperty('data') && typeof opts.data.serializeBinary === 'function') {
                 data = opts.data.serializeBinary();
             }
             request.send(data);

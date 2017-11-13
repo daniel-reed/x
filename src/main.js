@@ -49,7 +49,7 @@ export default class x {
         x.setProtoConvert(request, opts);
 
         let data;
-        if (opts.hasOwnProperty('data') && opts.data.hasOwnProperty('serializeBinary')) {
+        if (opts.hasOwnProperty('data') && typeof opts.data.serializeBinary === 'function') {
             data = opts.data.serializeBinary();
         }
         request.send(data);
