@@ -1,5 +1,11 @@
 export default class x {
-    static text(url, options) {
+    static new(promise) {
+        let request = new Request();
+
+        return x.returnRequestOrPromise(request, promise);
+    }
+
+    static text(url, options, promise) {
         let request = new Request();
         let opts = {type: "POST", url: url};
         Object.assign(opts, options);
@@ -12,10 +18,10 @@ export default class x {
         let data = opts.hasOwnProperty('data') ? opts.data : undefined;
         request.send(data);
 
-        return x.returnRequestOrPromise(request, options);
+        return x.returnRequestOrPromise(request, promise);
     }
 
-    static json(url, options) {
+    static json(url, options, promise) {
         let request = new Request();
         let opts = {type: "POST", url: url, responseType: "json"};
         Object.assign(opts, options);
@@ -28,10 +34,10 @@ export default class x {
         let data = opts.hasOwnProperty('data') ? JSON.stringify(opts.data) : undefined;
         request.send(data);
 
-        return x.returnRequestOrPromise(request, options);
+        return x.returnRequestOrPromise(request, promise);
     }
 
-    static proto(url, options) {
+    static proto(url, options, promise) {
         let request = new Request();
         let opts = {type: "POST", url: url, responseType: "json"};
         Object.assign(opts, options);
@@ -48,7 +54,7 @@ export default class x {
         }
         request.send(data);
 
-        return x.returnRequestOrPromise(request, options);
+        return x.returnRequestOrPromise(request, promise);
     }
 
     static setJSONHeaders(request, options) {
@@ -114,11 +120,11 @@ export default class x {
         }
     }
 
-    static returnRequestOrPromise(request, options) {
-        switch (options.returnType) {
-            case "promise": return request.getPromise();
-            default: return request;
+    static returnRequestOrPromise(request, promise) {
+        if (promise) {
+            return request.getPromise();
         }
+        return request;
     }
 }
 

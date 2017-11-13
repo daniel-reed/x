@@ -151,8 +151,15 @@ var x = function () {
     }
 
     createClass(x, null, [{
+        key: "new",
+        value: function _new(promise) {
+            var request = new Request();
+
+            return x.returnRequestOrPromise(request, promise);
+        }
+    }, {
         key: "text",
-        value: function text(url, options) {
+        value: function text(url, options, promise) {
             var request = new Request();
             var opts = { type: "POST", url: url };
             Object.assign(opts, options);
@@ -165,11 +172,11 @@ var x = function () {
             var data = opts.hasOwnProperty('data') ? opts.data : undefined;
             request.send(data);
 
-            return x.returnRequestOrPromise(request, options);
+            return x.returnRequestOrPromise(request, promise);
         }
     }, {
         key: "json",
-        value: function json(url, options) {
+        value: function json(url, options, promise) {
             var request = new Request();
             var opts = { type: "POST", url: url, responseType: "json" };
             Object.assign(opts, options);
@@ -182,11 +189,11 @@ var x = function () {
             var data = opts.hasOwnProperty('data') ? JSON.stringify(opts.data) : undefined;
             request.send(data);
 
-            return x.returnRequestOrPromise(request, options);
+            return x.returnRequestOrPromise(request, promise);
         }
     }, {
         key: "proto",
-        value: function proto(url, options) {
+        value: function proto(url, options, promise) {
             var request = new Request();
             var opts = { type: "POST", url: url, responseType: "json" };
             Object.assign(opts, options);
@@ -203,7 +210,7 @@ var x = function () {
             }
             request.send(data);
 
-            return x.returnRequestOrPromise(request, options);
+            return x.returnRequestOrPromise(request, promise);
         }
     }, {
         key: "setJSONHeaders",
@@ -280,13 +287,11 @@ var x = function () {
         }
     }, {
         key: "returnRequestOrPromise",
-        value: function returnRequestOrPromise(request, options) {
-            switch (options.returnType) {
-                case "promise":
-                    return request.getPromise();
-                default:
-                    return request;
+        value: function returnRequestOrPromise(request, promise) {
+            if (promise) {
+                return request.getPromise();
             }
+            return request;
         }
     }]);
     return x;
