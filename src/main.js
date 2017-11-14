@@ -141,13 +141,11 @@ class Request {
     }
 
     _then = (_then, _catch) => {
-        this.promise = this.promise.then(_then, _catch);
-        return this;
+        return this.promise.then(_then, _catch);
     }
 
     _catch = (_catch) => {
-        this.promise = this.promise.catch(_catch);
-        return this;
+        return this.promise.catch(_catch);
     }
 
     open = (opts) => {

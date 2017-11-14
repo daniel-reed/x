@@ -299,13 +299,11 @@ var Request = function Request() {
     classCallCheck(this, Request);
 
     this._then = function (_then, _catch) {
-        _this2.promise = _this2.promise.then(_then, _catch);
-        return _this2;
+        return _this2.promise.then(_then, _catch);
     };
 
     this._catch = function (_catch) {
-        _this2.promise = _this2.promise.catch(_catch);
-        return _this2;
+        return _this2.promise.catch(_catch);
     };
 
     this.open = function (opts) {
