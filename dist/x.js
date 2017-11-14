@@ -302,6 +302,16 @@ var Request = function Request() {
 
     classCallCheck(this, Request);
 
+    this._then = function (_then, _catch) {
+        _this2.promise = _this2.promise.then(_then, _catch);
+        return _this2;
+    };
+
+    this._catch = function (_catch) {
+        _this2.promise = _this2.promise.catch(_catch);
+        return _this2;
+    };
+
     this.open = function (opts) {
         if (!opts.hasOwnProperty('url')) throw "Missing 'url' Parameter";
 
@@ -442,6 +452,9 @@ var Request = function Request() {
         _this2.resolve = resolve;
         _this2.reject = reject;
     });
+
+    this.then = this._then;
+    this.catch = this._catch;
 };
 
 return x;

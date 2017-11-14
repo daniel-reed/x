@@ -135,6 +135,19 @@ class Request {
             this.resolve = resolve;
             this.reject = reject;
         });
+
+        this.then = this._then;
+        this.catch = this._catch;
+    }
+
+    _then = (_then, _catch) => {
+        this.promise = this.promise.then(_then, _catch);
+        return this;
+    }
+
+    _catch = (_catch) => {
+        this.promise = this.promise.catch(_catch);
+        return this;
     }
 
     open = (opts) => {
