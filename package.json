@@ -2,12 +2,16 @@
   "name": "x",
   "version": "1.0.0",
   "description": "Javascript XMLHttpRequest Wrapper",
-  "main": "dist/main.js",
-  "jsnext:main": "dist/main.mjs",
-  "module": "dist/main.mjs",
-  "browser": "dist/main.browser.js",
+  "main": "build/main/index.js",
+  "typings": "build/main/index.d.ts",
+  "module": "build/module/index.js",
+  "browser": "build/browser/index.js",
   "scripts": {
-    "build": "node tools/build"
+    "build": "npm run build:main && npm run build:module && npm run build:browser && npm run build:browser-cjs",
+    "build:main": "tsc -p tsconfig.json",
+    "build:module": "tsc -p config/exports/tsconfig.module.json",
+    "build:browser": "rollup -c config/exports/rollup.config.js -f es -o build/browser/index.js",
+    "build:browser-cjs": "rollup -c config/exports/rollup.config.js -f cjs -o build/browser/index.cjs.js"
   },
   "repository": "git@github.com:redaniel22/x.git",
   "author": "Daniel Reed <daniel.reed@reedworthytech.com>",
