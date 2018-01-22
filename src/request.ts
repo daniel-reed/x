@@ -26,7 +26,7 @@ export class XRequest {
     error?: any;
     response?: any;
 
-    promise: Promise<XRequest>;
+    promise: Promise<XRequest | void>;
     convert: (d: Uint8Array | string, t: this) => any;
     resolve: Function;
     reject: Function;
@@ -72,7 +72,7 @@ export class XRequest {
         this.xhr.setRequestHeader(k, v);
     }
 
-    getPromise(): Promise<XRequest> {
+    getPromise(): Promise<XRequest| void> {
         return this.promise;
     }
 
