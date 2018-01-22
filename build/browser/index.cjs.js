@@ -160,6 +160,7 @@ function XJson(url, options) {
     let request = new XRequest();
     let opts = Object.create(options);
     opts.url = url;
+    opts.responseType = "json";
     let data = opts.data ? opts.data : undefined;
     if (opts.data !== null && opts.data !== undefined) {
         opts.method = "POST";

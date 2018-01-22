@@ -41,6 +41,7 @@ export function XJson(url: string, options: XOptions): XRequest {
     let request: XRequest = new XRequest();
     let opts: XOptions = Object.create(options);
     opts.url = url;
+    opts.responseType = "json";
 
     let data = opts.data ? opts.data : undefined;
     if (opts.data !== null && opts.data !== undefined) {
