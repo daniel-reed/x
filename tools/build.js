@@ -6,7 +6,6 @@ const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
 const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
-const uglify = require('rollup-plugin-uglify');
 const pkg = require('../package.json');
 
 const babelPresets = [["env", {"modules": false}]];
@@ -22,32 +21,6 @@ const bundles = [
         babelPresets: babelPresets,
         babelPlugins: babelPlugins,
     },
-    {
-        format: 'es', ext: '.mjs',
-        plugins: [],
-        babelPresets: babelPresets,
-        babelPlugins: babelPlugins,
-    },
-    {
-        format: 'cjs', ext: '.browser.js',
-        plugins: [],
-        babelPresets: babelPresets,
-        babelPlugins: babelPlugins,
-    },
-    {
-        format: 'umd', ext: '.js',
-        plugins: [],
-        babelPresets: babelPresets,
-        babelPlugins: babelPlugins,
-        moduleName: 'x'
-    },
-    {
-        format: 'umd', ext: '.min.js',
-        moduleName: 'x', minify: true,
-        plugins: [uglify()],
-        babelPresets: babelPresets,
-        babelPlugins: babelPlugins,
-    }
 ];
 
 let promise = Promise.resolve();
