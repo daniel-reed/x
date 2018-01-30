@@ -2,47 +2,44 @@
 
 ## Description
 
-This library provides a wrapper around XMLHttpRequest. Its primary purpose is to easily handle conversion of the
-response into the desired format.
+This library provides a promise orriented wrapper around XMLHttpRequest. Its primary purpose is to easily handle the
+conversion of the response into the desired format.
 
 ## Usage
 
-It is recommended to interact through the provided promise, not by overriding onSuccess, OnError, etc...
-
 ```javascript
   import x from 'x'
-  import ProtoLibrary from 'ProtoLibrary'
+  import proto from 'proto'
   
+  // Pass the protobuf class for automatic deserialization
   let req = x.proto("https://www.example.com", {
-    proto: ProtoLibrary.ProtoMessage,
+    proto: proto.Message,
   });
   
-  // Get promise form request
+  // Get promise from request
   let pp = req.getPromise();
-  pp.then((result) => {
-    // result == req
+  pp.then((_req) => {
     // Response would be the deserialized protobuf message
-    console.log(result.getResponse());
+    console.log(_req.getResponse());
   });
   
-  // Receive promise back directly
-  let jp = x.json("https://www.example.com", {
-    returnType: "promise"
-  });
+  // Automatically parse response body as json
+  req = x.json("https://www.example.com");
   
-  jp.then((result) => {
-    // Deserialized Json
-    console.log(result.getResponse());
+  req.getPromise().then((_req) => { 
+    // JSON Result
+    console.log(_req.getResponse());
   });
 ```
 
 ## Options
 | Options | Description |
 | ------- | ----------- |
-| onSuccess | Override the onSuccess handler |
-| onError | Override the onError handler |   
-| onAbort | Override the onAbort handler |
-| onTimeout | Override the onTimeout handler |
 | convert | Provide a custom conversion handler |
-| proto | Provide the protobuf class you wish to deserialize |
-| returnType | set to "promise" to get a promise back instead of the request |
+| data | Pass data to be posted as body |   
+| headers | Provide custom headers |
+| method | Set the HTTP Method |
+| requestedWith | Toggle whether add "X-Requested-With"="XMLHttpRequest" to headers |
+| responseType | Set the xhr response type |
+| timeout | Provide the timeout duration |
+| url | Set the url to call |
